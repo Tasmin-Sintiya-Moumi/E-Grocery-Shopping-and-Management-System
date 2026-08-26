@@ -3,9 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Grocery</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    
+    <header>
+    <a href="index.html" class="logo">Online Grocery Store</a>
+    <nav id="navAuth"></nav>
+  </header>
+
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search items">
+      <select id="categorySelect"><option value="">All categories</option></select>
+      <button id="searchBtn">Search</button>
+    </div>
+
+    <div id="msg"></div>
+    <div class="product-grid" id="productGrid">Loading products...</div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/authentication.js"></script>
+  <script>
+    renderNavAuthArea('navAuth');
+
+    async function loadCategories() {
+      try {
+        const cats = await Api.getCategories();
+        const sel = document.getElementById('categorySelect');
+        cats.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.id;
+          opt.textContent = c.name;
+          sel.appendChild(opt);
+        });
+      } catch (e) {"error"}
+    }
+
+    function productCard(p) {
+      const img = p.image || 'https://via.placeholder.com/220x140?text=' + encodeURIComponent(p.name);
+      return `
+        <div class="product-card">
+          <img src="${img}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <div class="muted">${p.category_name || ''}</div>
+          <div class="price">$${Number(p.price).toFixed(2)} / ${p.unit}</div>
+          <div class="muted">${p.stock > 0 ? p.stock + ' in stock' : 'Out of stock'}</div>
+          <button class="btn" ${p.stock <= 0 ? 'disabled' : ''} onclick="addToCart(${p.id})">Add to Cart</button>
+        </div>`;
+    }
+
+    async function loadProducts() {
+      const grid = document.getElementById('productGrid');
+      const search = document.getElementById('searchInput').value;
+      const category = document.getElementById('categorySelect').value;
+      const params = new URLSearchParams();
+      if (search) params.set('search', search);
+      if (category) params.set('category', category);
+
+      try {
+        const products = await Api.getProducts('?' + params.toString());
+        grid.innerHTML = products.length
+          ? products.map(productCard).join('')
+          : '<p>No products found.</p>';
+      } catch (e) {
+        grid.innerHTML = `<p class="error">${e.message}</p>`;
+      }
+    }
+
+    async function addToCart(productId) {
+      if (!getUser()) { window.location.href = 'login.html'; return; }
+      try {
+        await Api.addToCart(productId, 1);
+        document.getElementById('msg').innerHTML = '<p class="success">Added to cart.</p>';
+      } catch (e) {
+        document.getElementById('msg').innerHTML = `<p class="error">${e.message}</p>`;
+      }
+    }
+
+    document.getElementById('searchBtn').addEventListener('click', loadProducts);
+    document.getElementById('categorySelect').addEventListener('change', loadProducts);
+
+    loadCategories();
+    loadProducts();
+  </script>
 </body>
 </html>
