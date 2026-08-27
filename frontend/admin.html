@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">Online Grocery Store</a>
+    <nav id="navAuth"></nav>
+  </header>
+
+  <div class="container">
+    <h2>Manage Products</h2>
+
+    <form class="card" id="productForm" style="max-width:600px; margin:0 0 30px;">
+      <h3 id="formTitle">Add Product</h3>
+      <input type="hidden" id="productId">
+      <input type="text" id="name" placeholder="Product name" required>
+      <textarea id="description" placeholder="Description" rows="2"></textarea>
+      <input type="number" id="price" placeholder="Price" step="0.01" required>
+      <input type="number" id="stock" placeholder="Stock quantity" required>
+      <input type="text" id="unit" placeholder="Unit (kg, pcs, litre...)" value="pcs">
+      <input type="text" id="image" placeholder="Image URL">
+      <select id="category_id"><option value="">No category</option></select>
+      <button type="submit" class="btn">Save Product</button>
+      <button type="button" class="btn secondary" id="cancelEdit" style="display:none;">Cancel Edit</button>
+      <div id="formMsg"></div>
+    </form>
+
+    <div class="product-grid" id="productGrid">Loading...</div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireLogin();
+    const user = getUser();
+    if (user.role !== 'admin') {
+      alert('Admins only');
+      window.location.href = 'index.html';
+    }
+    renderNavAuthArea('navAuth');
+
+    async function loadCategoriesIntoForm() {
+      const cats = await Api.getCategories();
+      const sel = document.getElementById('category_id');
+      cats.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = c.name;
+        sel.appendChild(opt);
+      });
+    }
+
+    function adminCard(p) {
+      const img = p.image || 'https://via.placeholder.com/220x140?text=' + encodeURIComponent(p.name);
+      return `
+        <div class="product-card">
+          <img src="${img}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <div class="price">BDT${Number(p.price).toFixed(2)}</div>
+          <div class="muted">Stock: ${p.stock}</div>
+          <button class="btn" onclick='editProduct(${JSON.stringify(p)})'>Edit</button>
+          <button class="btn danger" onclick="deleteProduct(${p.id})">Delete</button>
+        </div>`;
+    }
+
+    async function loadProducts() {
+      const grid = document.getElementById('productGrid');
+      const products = await Api.getProducts();
+      grid.innerHTML = products.map(adminCard).join('');
+    }
+
+    function editProduct(p) {
+      document.getElementById('formTitle').textContent = 'Edit Product';
+      document.getElementById('productId').value = p.id;
+      document.getElementById('name').value = p.name;
+      document.getElementById('description').value = p.description || '';
+      document.getElementById('price').value = p.price;
+      document.getElementById('stock').value = p.stock;
+      document.getElementById('unit').value = p.unit;
+      document.getElementById('image').value = p.image || '';
+      document.getElementById('category_id').value = p.category_id || '';
+      document.getElementById('cancelEdit').style.display = 'inline-block';
+      window.scrollTo(0, 0);
+    }
+
+    document.getElementById('cancelEdit').addEventListener('click', () => {
+      document.getElementById('productForm').reset();
+      document.getElementById('productId').value = '';
+      document.getElementById('formTitle').textContent = 'Add Product';
+      document.getElementById('cancelEdit').style.display = 'none';
+    });
+
+    async function deleteProduct(id) {
+      if (!confirm('Delete this product?')) return;
+      await Api.deleteProduct(id);
+      loadProducts();
+    }
+
+    document.getElementById('productForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('formMsg');
+      const id = document.getElementById('productId').value;
+      const payload = {
+        name: document.getElementById('name').value,
+        description: document.getElementById('description').value,
+        price: Number(document.getElementById('price').value),
+        stock: Number(document.getElementById('stock').value),
+        unit: document.getElementById('unit').value,
+        image: document.getElementById('image').value,
+        category_id: document.getElementById('category_id').value || null
+      };
+      try {
+        if (id) {
+          await Api.updateProduct(id, payload);
+        } else {
+          await Api.createProduct(payload);
+        }
+        msg.innerHTML = '<p class="success">Saved.</p>';
+        document.getElementById('productForm').reset();
+        document.getElementById('productId').value = '';
+        document.getElementById('formTitle').textContent = 'Add Product';
+        document.getElementById('cancelEdit').style.display = 'none';
+        loadProducts();
+      } catch (err) {
+        msg.innerHTML = `<p class="error">${err.message}</p>`;
+      }
+    });
+
+    loadCategoriesIntoForm();
+    loadProducts();
+  </script>
+</body>
+</html>

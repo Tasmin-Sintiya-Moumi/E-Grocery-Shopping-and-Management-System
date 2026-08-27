@@ -15,7 +15,7 @@
     <h2>Your Cart</h2>
     <div id="cartItems">Loading...</div>
     <div class="total-bar" id="totalBar" style="display:none;">
-      <span>Total</span><span id="totalAmount">$0.00</span>
+      <span>Total</span><span id="totalAmount">BDT 0.00</span>
     </div>
     <div style="margin-top:16px;">
       <button class="btn" id="checkoutBtn" style="display:none;">Proceed to Checkout</button>
@@ -35,10 +35,10 @@
           <img src="${img}" alt="${item.name}">
           <div class="info">
             <strong>${item.name}</strong><br>
-            <span class="muted">$${Number(item.price).toFixed(2)} / ${item.unit}</span>
+            <span class="muted">BDT${Number(item.price).toFixed(2)} / ${item.unit}</span>
           </div>
           <input type="number" min="1" value="${item.quantity}" onchange="updateQty(${item.product_id}, this.value)">
-          <strong>$${Number(item.line_total).toFixed(2)}</strong>
+          <strong>BDT${Number(item.line_total).toFixed(2)}</strong>
           <button class="btn danger" onclick="removeItem(${item.product_id})">Remove</button>
         </div>`;
     }
@@ -52,7 +52,7 @@
           return;
         }
         container.innerHTML = items.map(cartRow).join('');
-        document.getElementById('totalAmount').textContent = '$' + total.toFixed(2);
+        document.getElementById('totalAmount').textContent = 'BDT' + total.toFixed(2);
         document.getElementById('totalBar').style.display = 'flex';
         document.getElementById('checkoutBtn').style.display = 'inline-block';
       } catch (e) {
