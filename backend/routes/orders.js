@@ -5,7 +5,7 @@ const { requireAuth, requireRole } = require('../middleware/auth');
 const router = express.Router();
 router.use(requireAuth);
 
-// POST /api/orders/checkout - converts the current cart into an order
+
 router.post('/checkout', async (req, res) => {
   const { shipping_address } = req.body;
   const connection = await pool.getConnection();
@@ -25,7 +25,7 @@ router.post('/checkout', async (req, res) => {
       return res.status(400).json({ message: 'Your cart is empty' });
     }
 
-    // Verify stock before committing to anything
+    
     for (const item of cartItems) {
       if (item.stock < item.quantity) {
         await connection.rollback();
@@ -66,7 +66,7 @@ router.post('/checkout', async (req, res) => {
   }
 });
 
-// GET /api/orders - current user's order history
+
 router.get('/', async (req, res) => {
   const [orders] = await pool.query(
     'SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC',
@@ -75,7 +75,7 @@ router.get('/', async (req, res) => {
   res.json(orders);
 });
 
-// GET /api/orders/:id - single order with its line items (owner or admin)
+
 router.get('/:id', async (req, res) => {
   const [orders] = await pool.query('SELECT * FROM orders WHERE id = ?', [req.params.id]);
   if (orders.length === 0) return res.status(404).json({ message: 'Order not found' });
@@ -88,7 +88,7 @@ router.get('/:id', async (req, res) => {
   res.json({ ...orders[0], items });
 });
 
-// PUT /api/orders/:id/status - admin/seller updates order status
+
 router.put('/:id/status', requireRole('admin', 'seller'), async (req, res) => {
   const { status } = req.body;
   const valid = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
