@@ -75,6 +75,13 @@ router.get('/', async (req, res) => {
   res.json(orders);
 });
 
+router.get('/', async (req, res) => {
+  const [orders] = await pool.query(
+    'SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC',
+    [req.user.id]
+  );
+  res.json(orders);
+});
 
 router.get('/:id', async (req, res) => {
   const [orders] = await pool.query('SELECT * FROM orders WHERE id = ?', [req.params.id]);
