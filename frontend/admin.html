@@ -37,8 +37,8 @@
   <script>
     requireLogin();
     const user = getUser();
-    if (user.role !== 'admin') {
-      alert('Admins only');
+    if (user.role !== 'admin' && user.role !== 'seller') {
+      alert('Sellers and admins only');
       window.location.href = 'index.html';
     }
     renderNavAuthArea('navAuth');

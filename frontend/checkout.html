@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Checkout</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">Online Grocery Store</a>
+    <nav id="navAuth"></nav>
+  </header>
+
+  <form class="card" id="checkoutForm">
+    <h2>Checkout</h2>
+    <textarea id="address" placeholder="Shipping address" rows="3" required></textarea>
+    <button type="submit" class="btn">Place Order</button>
+    <div id="msg"></div>
+  </form>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireLogin();
+    renderNavAuthArea('navAuth');
+
+    document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('msg');
+      try {
+        const res = await Api.checkout(document.getElementById('address').value);
+        msg.innerHTML = `<p class="success">Order #${res.order_id} placed! Total: BDT${res.total.toFixed(2)}</p>`;
+        setTimeout(() => window.location.href = 'orders.html', 1200);
+      } catch (err) {
+        msg.innerHTML = `<p class="error">${err.message}</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
