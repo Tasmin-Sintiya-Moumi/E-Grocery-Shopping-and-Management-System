@@ -38,7 +38,7 @@
             <span class="muted">BDT${Number(item.price).toFixed(2)} / ${item.unit}</span>
           </div>
           <input type="number" min="1" value="${item.quantity}" onchange="updateQty(${item.product_id}, this.value)">
-          <strong>BDT${Number(item.line_total).toFixed(2)}</strong>
+          <strong>BDT ${Number(item.line_total).toFixed(2)}</strong>
           <button class="btn danger" onclick="removeItem(${item.product_id})">Remove</button>
         </div>`;
     }
@@ -52,7 +52,7 @@
           return;
         }
         container.innerHTML = items.map(cartRow).join('');
-        document.getElementById('totalAmount').textContent = 'BDT' + total.toFixed(2);
+        document.getElementById('totalAmount').textContent = 'BDT ' + total.toFixed(2);
         document.getElementById('totalBar').style.display = 'flex';
         document.getElementById('checkoutBtn').style.display = 'inline-block';
       } catch (e) {

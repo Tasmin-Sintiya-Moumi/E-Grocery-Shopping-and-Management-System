@@ -75,7 +75,7 @@ VALUES
 ('Milk', 'Fresh milk', 100.00, 30, 'litre', 'images/milk.jpg', 2),
 ('Bread', 'Fresh bread from bakery', 60.00, 25, 'pieces', 'images/bread.webp', 3),
 ('Broccoli', 'Fresh broccoli', 200.00, 40, 'kg', 'images/broccoli.jpg', 1),
-('Chedder Cheese', 'Fresh cheese', 350.00, 65, 'kg', 'images/chedder cheese.jpg', 2),
+('Chedder Cheese', 'Fresh cheese', 350.00, 65, 'kg', 'images/chedder cheese.jpeg', 2),
 ('Cherry Tomatoes', 'Fresh cherry tomatoes', 70.00, 30, 'kg', 'images/cherry tomatoes.jpg', 1),
 ('Avocado', 'Fresh fruit', 1400.00, 10, 'kg', 'images/avocado.jpg', 1),
 ('Egg', 'Fresh eggs', 10.00, 30, 'pieces', 'images/eggs.webp', 2);

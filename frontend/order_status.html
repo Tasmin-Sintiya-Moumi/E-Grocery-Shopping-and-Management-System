@@ -54,7 +54,7 @@
           <td>#${o.id}</td>
           <td>${o.buyer_name}<br><span class="muted">${o.buyer_email}</span></td>
           <td>${new Date(o.created_at).toLocaleDateString()}</td>
-          <td>BDT${Number(o.total_amount).toFixed(2)}</td>
+          <td>BDT ${Number(o.total_amount).toFixed(2)}</td>
           <td>${o.shipping_address || '-'}</td>
           <td>${statusDropdown(o)}</td>
         </tr>`;

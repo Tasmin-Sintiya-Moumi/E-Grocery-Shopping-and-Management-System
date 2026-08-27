@@ -48,7 +48,7 @@
           <img src="${img}" alt="${p.name}">
           <h3>${p.name}</h3>
           <div class="muted">${p.category_name || ''}</div>
-          <div class="price">$${Number(p.price).toFixed(2)} / ${p.unit}</div>
+          <div class="price">BDT ${Number(p.price).toFixed(2)} / ${p.unit}</div>
           <div class="muted">${p.stock > 0 ? p.stock + ' in stock' : 'Out of stock'}</div>
           <button class="btn" ${p.stock <= 0 ? 'disabled' : ''} onclick="addToCart(${p.id})">Add to Cart</button>
         </div>`;

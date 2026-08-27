@@ -60,7 +60,7 @@
         <div class="product-card">
           <img src="${img}" alt="${p.name}">
           <h3>${p.name}</h3>
-          <div class="price">BDT${Number(p.price).toFixed(2)}</div>
+          <div class="price">BDT ${Number(p.price).toFixed(2)}</div>
           <div class="muted">Stock: ${p.stock}</div>
           <button class="btn" onclick='editProduct(${JSON.stringify(p)})'>Edit</button>
           <button class="btn danger" onclick="deleteProduct(${p.id})">Delete</button>
