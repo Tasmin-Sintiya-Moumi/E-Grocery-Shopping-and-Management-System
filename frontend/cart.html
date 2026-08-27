@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Your Cart</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">Online Grocery Store</a>
+    <nav id="navAuth"></nav>
+  </header>
+
+  <div class="container">
+    <h2>Your Cart</h2>
+    <div id="cartItems">Loading...</div>
+    <div class="total-bar" id="totalBar" style="display:none;">
+      <span>Total</span><span id="totalAmount">$0.00</span>
+    </div>
+    <div style="margin-top:16px;">
+      <button class="btn" id="checkoutBtn" style="display:none;">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireLogin();
+    renderNavAuthArea('navAuth');
+
+    function cartRow(item) {
+      const img = item.image || 'https://via.placeholder.com/60?text=+';
+      return `
+        <div class="cart-row" data-product="${item.product_id}">
+          <img src="${img}" alt="${item.name}">
+          <div class="info">
+            <strong>${item.name}</strong><br>
+            <span class="muted">$${Number(item.price).toFixed(2)} / ${item.unit}</span>
+          </div>
+          <input type="number" min="1" value="${item.quantity}" onchange="updateQty(${item.product_id}, this.value)">
+          <strong>$${Number(item.line_total).toFixed(2)}</strong>
+          <button class="btn danger" onclick="removeItem(${item.product_id})">Remove</button>
+        </div>`;
+    }
+
+    async function loadCart() {
+      const container = document.getElementById('cartItems');
+      try {
+        const { items, total } = await Api.getCart();
+        if (items.length === 0) {
+          container.innerHTML = '<p>Your cart is empty. <a href="index.html">Go shopping</a></p>';
+          return;
+        }
+        container.innerHTML = items.map(cartRow).join('');
+        document.getElementById('totalAmount').textContent = '$' + total.toFixed(2);
+        document.getElementById('totalBar').style.display = 'flex';
+        document.getElementById('checkoutBtn').style.display = 'inline-block';
+      } catch (e) {
+        container.innerHTML = `<p class="error">${e.message}</p>`;
+      }
+    }
+
+    async function updateQty(productId, quantity) {
+      await Api.updateCartItem(productId, Number(quantity));
+      loadCart();
+    }
+
+    async function removeItem(productId) {
+      await Api.removeCartItem(productId);
+      loadCart();
+    }
+
+    document.getElementById('checkoutBtn').addEventListener('click', () => {
+      window.location.href = 'checkout.html';
+    });
+
+    loadCart();
+  </script>
+</body>
+</html>
