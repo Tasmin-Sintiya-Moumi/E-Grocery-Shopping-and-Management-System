@@ -46,5 +46,8 @@ const Api = {
   checkout: (shipping_address) =>
     apiRequest('/orders/checkout', { method: 'POST', body: { shipping_address }, auth: true }),
   getOrders: () => apiRequest('/orders', { auth: true }),
-  getOrder: (id) => apiRequest(`/orders/${id}`, { auth: true })
+  getOrder: (id) => apiRequest(`/orders/${id}`, { auth: true }),
+   getAllOrders: () => apiRequest('/orders/all', { auth: true }),
+  updateOrderStatus: (id, status) =>
+    apiRequest(`/orders/${id}/status`, { method: 'PUT', body: { status }, auth: true })
 };

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Manage Orders</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">Online Grocery Store</a>
+    <nav id="navAuth"></nav>
+  </header>
+
+  <div class="container">
+    <h2>Manage Orders</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Buyer</th>
+          <th>Date</th>
+          <th>Total</th>
+          <th>Address</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="ordersBody"><tr><td colspan="6">Loading...</td></tr></tbody>
+    </table>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireLogin();
+    const user = getUser();
+    if (user.role !== 'admin' && user.role !== 'seller') {
+      alert('Sellers and admins only');
+      window.location.href = 'index.html';
+    }
+    renderNavAuthArea('navAuth');
+
+    const STATUSES = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+
+    function statusDropdown(order) {
+      const options = STATUSES.map(s =>
+        `<option value="${s}" ${s === order.status ? 'selected' : ''}>${s}</option>`
+      ).join('');
+      return `<select onchange="updateStatus(${order.id}, this.value)">${options}</select>`;
+    }
+
+    function orderRow(o) {
+      return `
+        <tr>
+          <td>#${o.id}</td>
+          <td>${o.buyer_name}<br><span class="muted">${o.buyer_email}</span></td>
+          <td>${new Date(o.created_at).toLocaleDateString()}</td>
+          <td>BDT${Number(o.total_amount).toFixed(2)}</td>
+          <td>${o.shipping_address || '-'}</td>
+          <td>${statusDropdown(o)}</td>
+        </tr>`;
+    }
+
+    async function loadOrders() {
+      const body = document.getElementById('ordersBody');
+      try {
+        const orders = await Api.getAllOrders();
+        body.innerHTML = orders.length
+          ? orders.map(orderRow).join('')
+          : '<tr><td colspan="6">No orders yet.</td></tr>';
+      } catch (e) {
+        body.innerHTML = `<tr><td colspan="6" class="error">${e.message}</td></tr>`;
+      }
+    }
+
+    async function updateStatus(orderId, status) {
+      try {
+        await Api.updateOrderStatus(orderId, status);
+      } catch (e) {
+        alert('Failed to update status: ' + e.message);
+        loadOrders();
+      }
+    }
+
+    loadOrders();
+  </script>
+</body>
+</html>

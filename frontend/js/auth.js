@@ -26,10 +26,12 @@ function renderNavAuthArea(elementId) {
   const user = getUser();
 
   if (user) {
+    const isStaff = user.role === 'admin' || user.role === 'seller';
     el.innerHTML = `
       <span class="nav-user">Hi, ${user.name}</span>
-      ${user.role === 'admin' || user.role === 'seller' ? '<a href="admin.html">Admin</a>' : ''}
-      <a href="orders.html">Orders</a>
+      ${isStaff ? '<a href="admin.html">Admin</a>' : ''}
+      ${isStaff ? '<a href="order_status.html">Manage Orders</a>' : ''}
+      <a href="orders.html">My Orders</a>
       <a href="cart.html">Cart</a>
       <button id="logoutBtn" class="link-btn">Logout</button>
     `;
