@@ -209,6 +209,21 @@ th, td { padding: 10px; border-bottom: 1px solid var(--border); text-align: left
   .cart-row {
     flex-wrap: wrap;
   }
+
+  form.card {
+    width: 90%;
+    max-width: 420px;
+    margin: 25px auto;
+    padding: 22px;
+  }
+
+  form.card input,
+  form.card select,
+  form.card textarea,
+  form.card button {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 
