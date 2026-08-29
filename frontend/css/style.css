@@ -326,18 +326,19 @@ th, td { padding: 10px; border-bottom: 1px solid var(--border); text-align: left
     width: 100%;
   }
 
-  form.card {
-    width: 95%;
-    max-width: none;
-    margin: 20px auto;
-    padding: 18px;
-  }
-
   form.card input,
   form.card select,
-  form.card textarea,
-  form.card button {
+  form.card textarea {
     width: 100%;
+    max-width: 100%;
+    font-size: 16px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  form.card {
+    width: 95%;
+    max-width: 420px;
     box-sizing: border-box;
   }
 }
