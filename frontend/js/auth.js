@@ -29,6 +29,7 @@ function renderNavAuthArea(elementId) {
     const isStaff = user.role === 'admin' || user.role === 'seller';
     el.innerHTML = `
       <span class="nav-user">Hi, ${user.name}</span>
+      <a href="index.html">Home</a>
       ${isStaff ? '<a href="admin.html">Admin</a>' : ''}
       ${isStaff ? '<a href="order_status.html">Manage Orders</a>' : ''}
       ${!isStaff ? '<a href="orders.html">My Orders</a>' : ''}
@@ -38,6 +39,7 @@ function renderNavAuthArea(elementId) {
     document.getElementById('logoutBtn').addEventListener('click', logout);
   } else {
     el.innerHTML = `
+      <a href="index.html">Home</a>
       <a href="login.html">Login</a>
       <a href="register.html">Register</a>
       <a href="cart.html">Cart</a>
