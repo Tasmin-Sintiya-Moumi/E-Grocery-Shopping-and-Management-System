@@ -31,7 +31,7 @@ function renderNavAuthArea(elementId) {
       <span class="nav-user">Hi, ${user.name}</span>
       ${isStaff ? '<a href="admin.html">Admin</a>' : ''}
       ${isStaff ? '<a href="order_status.html">Manage Orders</a>' : ''}
-      <a href="orders.html">My Orders</a>
+      ${!isStaff ? '<a href="orders.html">My Orders</a>' : ''}
       <a href="cart.html">Cart</a>
       <button id="logoutBtn" class="link-btn">Logout</button>
     `;
