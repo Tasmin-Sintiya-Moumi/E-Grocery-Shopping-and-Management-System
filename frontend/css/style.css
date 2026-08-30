@@ -24,8 +24,8 @@ header {
   background-repeat: no-repeat;
   color: #fff;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  align-items: center;
+  justify-content: space-between;
   padding: 25px 30px;
   min-height: 150px;
 }
@@ -34,16 +34,8 @@ header .logo {
   font-family: "Baloo 2", sans-serif;
   font-size: 40px; 
   font-weight: bolder; 
-  text-align: center;
   text-decoration: none; 
   color: #fff; }
-
-header nav {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 15px;
-}
 
 nav a, .link-btn {
   color: #fff;
