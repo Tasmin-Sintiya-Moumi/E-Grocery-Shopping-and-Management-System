@@ -18,7 +18,10 @@ body {
 }
 
 header {
-  background: var(--green);
+  background-image: url("../images/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #fff;
   display: flex;
   align-items: center;
