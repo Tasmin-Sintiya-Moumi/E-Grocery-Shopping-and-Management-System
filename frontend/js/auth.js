@@ -34,7 +34,7 @@ function renderNavAuthArea(elementId) {
       ${isStaff ? '<a href="order_status.html">Manage Orders</a>' : ''}
       ${!isStaff ? '<a href="orders.html">My Orders</a>' : ''}
       <a href="cart.html">Cart</a>
-      <a href="about.html">Cart</a>
+      <a href="about.html">About Us</a>
       <button id="logoutBtn" class="link-btn">Logout</button>
     `;
     document.getElementById('logoutBtn').addEventListener('click', logout);
