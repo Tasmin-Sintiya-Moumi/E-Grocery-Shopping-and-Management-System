@@ -31,8 +31,10 @@ header {
 }
 
 header .logo { 
+  font-family: "Trebuchet MS", Arial, sans-serif;
   font-size: 32px; 
-  font-weight: bold; 
+  font-weight: 700; 
+  letter-spacing: 1px;
   text-decoration: none; 
   color: #fff; }
 
