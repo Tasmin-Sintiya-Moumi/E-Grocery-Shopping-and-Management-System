@@ -27,7 +27,7 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 25px 30px;
-  min-height: 130px;
+  min-height: 150px;
 }
 
 header .logo { 
