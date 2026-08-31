@@ -70,7 +70,7 @@ header {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  color: var(--text);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -89,7 +89,7 @@ header .logo {
   font-size: 40px;
   font-weight: 800;
   text-decoration: none;
-  color: var(--green-dark);
+  color: #fff;
   letter-spacing: -0.02em;
 }
 
