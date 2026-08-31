@@ -114,14 +114,14 @@ nav a:hover, .link-btn:hover { color: var(--green); text-decoration: none; }
 .nav-user { margin-left: 22px; font-weight: 600; color: var(--green-dark); }
 
 .theme-toggle {
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 6px 10px;
-  cursor: pointer;
-  font-size: 16px;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
   margin-left: 18px;
-  color: var(--text);
+  cursor: pointer;
+  font-size: 18px;
+  color: #fff;
 }
 
 
