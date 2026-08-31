@@ -23,13 +23,13 @@
   --green-light: #e8f5ee;
 }
 
-/*[data-theme="dark"] header {
+[data-theme="dark"] header {
   background-image: url("../images/background.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-}*/
+}
 
 [data-theme="dark"] nav a,
 [data-theme="dark"] .link-btn {
