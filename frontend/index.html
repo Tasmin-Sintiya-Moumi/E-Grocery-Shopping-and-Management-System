@@ -113,7 +113,7 @@
       }
     }
 
-    async function addToCart(productId) {
+    async function addToCart(productId, btn) {
       if (!getUser()) { window.location.href = 'login.html'; return; }
       const originalText = btn.textContent;
       try {
