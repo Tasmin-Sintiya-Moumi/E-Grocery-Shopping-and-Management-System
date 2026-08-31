@@ -1,4 +1,4 @@
-# Eat Healthy Live Healthy — Grocery E-Commerce Platform
+# Eat Healthy Live Healthy — E-Grocery-Shopping-and-Management-System
 
 A full-stack grocery e-commerce web app: browse/search products, cart,
 checkout, order tracking, and a seller/admin dashboard for managing products
