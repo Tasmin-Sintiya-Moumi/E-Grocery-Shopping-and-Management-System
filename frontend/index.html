@@ -91,7 +91,7 @@
           <div class="muted">${p.category_name || ''}</div>
           <div class="price">BDT ${Number(p.price).toFixed(2)} / ${p.unit}</div>
           <div class="muted">${p.stock > 0 ? p.stock + ' in stock' : 'Out of stock'}</div>
-          <button class="btn" ${p.stock <= 0 ? 'disabled' : ''} onclick="addToCart(${p.id})">Add to Cart</button>
+          <button class="btn" ${p.stock <= 0 ? 'disabled' : ''} onclick="addToCart(${p.id}, this)">Add to Cart</button>
         </div>`;
     }
 
@@ -115,12 +115,22 @@
 
     async function addToCart(productId) {
       if (!getUser()) { window.location.href = 'login.html'; return; }
+      const originalText = btn.textContent;
       try {
-        await Api.addToCart(productId, 1);
-        document.getElementById('msg').innerHTML = '<p class="success">Added to cart.</p>';
+         await Api.addToCart(productId, 1);
+         btn.textContent = 'Added!';
+         btn.disabled = true;
+         setTimeout(() => {
+             btn.textContent = originalText;
+             btn.disabled = false;
+         }, 1500);
       } catch (e) {
-        document.getElementById('msg').innerHTML = `<p class="error">${e.message}</p>`;
+        btn.textContent = 'Failed';
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 1500);
       }
+
     }
 
     document.getElementById('searchBtn').addEventListener('click', loadProducts);
