@@ -23,7 +23,11 @@
       <input type="number" id="price" placeholder="Price" step="0.01" required>
       <input type="number" id="stock" placeholder="Stock quantity" required>
       <input type="text" id="unit" placeholder="Unit (kg, pcs, litre...)" value="pcs">
-      <input type="text" id="image" placeholder="Image URL">
+      <input type="hidden" id="image">
+      <label class="muted" style="margin-bottom:-6px;">Product image</label>
+      <input type="file" id="imageFile" accept="image/*">
+      <img id="imagePreview" src="" alt="" style="display:none; width:120px; height:120px; object-fit:cover; border-radius:8px; margin-top:6px;">
+      <div id="uploadStatus" class="muted"></div>
       <select id="category_id"><option value="">No category</option></select>
       <button type="submit" class="btn">Save Product</button>
       <button type="button" class="btn secondary" id="cancelEdit" style="display:none;">Cancel Edit</button>
@@ -55,6 +59,23 @@
       });
     }
 
+    document.getElementById('imageFile').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const status = document.getElementById('uploadStatus');
+  status.textContent = 'Uploading...';
+  try {
+    const result = await Api.uploadImage(file);
+    document.getElementById('image').value = result.url;
+    const preview = document.getElementById('imagePreview'); 
+    preview.src = result.url;
+    preview.style.display = 'block';
+    status.textContent = 'Image uploaded.';
+  } catch (err) {
+    status.innerHTML = <span class="error">${err.message}</span>;
+  }
+  });
+
     function adminCard(p) {
       const img = p.image || 'https://via.placeholder.com/220x140?text=' + encodeURIComponent(p.name);
       return `
@@ -75,25 +96,36 @@
     }
 
     function editProduct(p) {
-      document.getElementById('formTitle').textContent = 'Edit Product';
-      document.getElementById('productId').value = p.id;
-      document.getElementById('name').value = p.name;
-      document.getElementById('description').value = p.description || '';
-      document.getElementById('price').value = p.price;
-      document.getElementById('stock').value = p.stock;
-      document.getElementById('unit').value = p.unit;
-      document.getElementById('image').value = p.image || '';
-      document.getElementById('category_id').value = p.category_id || '';
-      document.getElementById('cancelEdit').style.display = 'inline-block';
-      window.scrollTo(0, 0);
-    }
+  document.getElementById('formTitle').textContent = 'Edit Product';
+  document.getElementById('productId').value = p.id;
+  document.getElementById('name').value = p.name;
+  document.getElementById('description').value = p.description || '';
+  document.getElementById('price').value = p.price;
+  document.getElementById('stock').value = p.stock;
+  document.getElementById('unit').value = p.unit;
+  document.getElementById('image').value = p.image || '';
+  document.getElementById('category_id').value = p.category_id || '';
+  const preview = document.getElementById('imagePreview');
+  if (p.image) {
+    preview.src = p.image;
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none';
+  }
+  document.getElementById('uploadStatus').textContent = '';
+  document.getElementById('cancelEdit').style.display = 'inline-block';
+  window.scrollTo(0, 0);
+}
 
     document.getElementById('cancelEdit').addEventListener('click', () => {
-      document.getElementById('productForm').reset();
-      document.getElementById('productId').value = '';
-      document.getElementById('formTitle').textContent = 'Add Product';
-      document.getElementById('cancelEdit').style.display = 'none';
-    });
+  document.getElementById('productForm').reset();
+  document.getElementById('productId').value = '';
+  document.getElementById('image').value = '';
+  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('uploadStatus').textContent = '';
+  document.getElementById('formTitle').textContent = 'Add Product';
+  document.getElementById('cancelEdit').style.display = 'none';
+  });
 
     async function deleteProduct(id) {
       if (!confirm('Delete this product?')) return;
@@ -120,12 +152,15 @@
         } else {
           await Api.createProduct(payload);
         }
-        msg.innerHTML = '<p class="success">Saved.</p>';
-        document.getElementById('productForm').reset();
-        document.getElementById('productId').value = '';
-        document.getElementById('formTitle').textContent = 'Add Product';
-        document.getElementById('cancelEdit').style.display = 'none';
-        loadProducts();
+       msg.innerHTML = '<p class="success">Saved.</p>';
+       document.getElementById('productForm').reset();
+       document.getElementById('productId').value = '';
+       document.getElementById('image').value = '';
+       document.getElementById('imagePreview').style.display = 'none';
+       document.getElementById('uploadStatus').textContent = '';
+       document.getElementById('formTitle').textContent = 'Add Product';
+       document.getElementById('cancelEdit').style.display = 'none';
+       loadProducts();
       } catch (err) {
         msg.innerHTML = `<p class="error">${err.message}</p>`;
       }

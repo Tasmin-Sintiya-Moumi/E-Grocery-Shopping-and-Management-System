@@ -24,6 +24,27 @@ async function apiRequest(path, { method = 'GET', body, auth = false } = {}) {
   return data;
 }
 
+async function uploadImageFile(file) {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const headers = {};
+  const token = getToken();
+  if (token) headers['Authorization'] = Bearer ${token};
+
+  const res = await fetch(${API_BASE}/upload, {
+    method: 'POST',
+    headers,
+    body: formData
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.message || Upload failed (${res.status}));
+  }
+  return data;
+}
+
 const Api = {
   register: (payload) => apiRequest('/auth/register', { method: 'POST', body: payload }),
   login: (payload) => apiRequest('/auth/login', { method: 'POST', body: payload }),
@@ -49,5 +70,6 @@ const Api = {
   getOrder: (id) => apiRequest(`/orders/${id}`, { auth: true }),
    getAllOrders: () => apiRequest('/orders/all', { auth: true }),
   updateOrderStatus: (id, status) =>
-    apiRequest(`/orders/${id}/status`, { method: 'PUT', body: { status }, auth: true })
+    apiRequest(`/orders/${id}/status`, { method: 'PUT', body: { status }, auth: true }),
+  uploadImage: (file) => uploadImageFile(file)
 };
