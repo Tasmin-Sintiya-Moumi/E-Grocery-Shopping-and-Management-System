@@ -1,1 +1,0 @@
-# E-Grocery-Shopping-and-Management-System
