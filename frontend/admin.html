@@ -60,21 +60,21 @@
     }
 
     document.getElementById('imageFile').addEventListener('change', async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const status = document.getElementById('uploadStatus');
-  status.textContent = 'Uploading...';
-  try {
-    const result = await Api.uploadImage(file);
-    document.getElementById('image').value = result.url;
-    const preview = document.getElementById('imagePreview'); 
-    preview.src = result.url;
-    preview.style.display = 'block';
-    status.textContent = 'Image uploaded.';
-  } catch (err) {
-    status.innerHTML = <span class="error">${err.message}</span>;
-  }
-  });
+      const file = e.target.files[0];
+      if (!file) return;
+      const status = document.getElementById('uploadStatus');
+      status.textContent = 'Uploading...';
+      try {
+        const result = await Api.uploadImage(file);
+        document.getElementById('image').value = result.url;
+        const preview = document.getElementById('imagePreview');
+        preview.src = result.url;
+        preview.style.display = 'block';
+        status.textContent = 'Image uploaded.';
+      } catch (err) {
+        status.innerHTML = `<span class="error">${err.message}</span>`;
+      }
+    });
 
     function adminCard(p) {
       const img = p.image || 'https://via.placeholder.com/220x140?text=' + encodeURIComponent(p.name);
