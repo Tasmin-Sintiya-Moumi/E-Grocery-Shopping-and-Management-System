@@ -35,6 +35,7 @@ function renderNavAuthArea(elementId) {
       <a href="cart.html">Cart</a>
       <a href="about.html">About Us</a>
       <button id="logoutBtn" class="link-btn">Logout</button>
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
     `;
     document.getElementById('logoutBtn').addEventListener('click', logout);
   } else {
@@ -46,3 +47,17 @@ function renderNavAuthArea(elementId) {
     `;
   }
 }
+
+function initTheme() {
+  const saved = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+}
+
+initTheme();
