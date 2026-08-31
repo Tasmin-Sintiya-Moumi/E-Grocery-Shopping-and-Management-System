@@ -15,12 +15,12 @@
 }
 
 [data-theme="dark"] {
-  --bg: #f5f6f8;
-  --card-bg: #ffffff;
-  --text: #1a1a2e;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --green-light: #e8f5ee;
+  --bg: #14161a;
+  --card-bg: #1e2126;
+  --text: #f1f1f1;
+  --muted: #b0b5bd;
+  --border: #343942;
+  --green-light: #1a2e22;
 }
 
 [data-theme="dark"] header {
@@ -41,17 +41,17 @@
 [data-theme="dark"] form.card input,
 [data-theme="dark"] form.card select,
 [data-theme="dark"] form.card textarea {
-  background: #ffffff;
-  color: #1a1a2e;
-  border-color: #e5e7eb;
+  background: #26292f;
+  color: #f1f1f1;
+  border-color: #343942;
 }
 
 [data-theme="dark"] table {
-  background: #ffffff;
+  background: #1e2126;
 }
 
 [data-theme="dark"] tr:hover td {
-  background: #fafafa;
+  background: #26292f;
 }
 
 * { box-sizing: border-box; }
