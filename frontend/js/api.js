@@ -30,9 +30,9 @@ async function uploadImageFile(file) {
 
   const headers = {};
   const token = getToken();
-  if (token) headers['Authorization'] = Bearer ${token};
+  if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const res = await fetch(${API_BASE}/upload, {
+  const res = await fetch(`${API_BASE}/upload`, {
     method: 'POST',
     headers,
     body: formData
@@ -40,7 +40,7 @@ async function uploadImageFile(file) {
 
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error(data.message || Upload failed (${res.status}));
+    throw new Error(data.message || `Upload failed (${res.status})`);
   }
   return data;
 }
